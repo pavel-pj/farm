@@ -7,7 +7,6 @@ namespace App\Actions\Farm\Enum;
 enum AnimalType: string
 {
     case COW= 'cow';
-
     case CHICKEN = 'chicken';
     case SHEEP = 'sheep';
 
@@ -15,6 +14,7 @@ enum AnimalType: string
     {
         return match($this) {
 
+            // [ animal Class ,  factory Class ]
 
             AnimalType::COW => ['Cow','CowFactory'],
             AnimalType::CHICKEN => ['Chicken','ChickenFactory'],
