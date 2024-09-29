@@ -3,7 +3,7 @@
 namespace App\Actions\Farm\Managment;
 
 use App\Actions\Farm\Contracts\Animal;
-use App\Actions\Farm\Enum\AnimalName;
+use App\Actions\Farm\Enum\AnimalType;
 use Illuminate\Support\Collection;
 use App\Actions\Farm\Factories\ChickenFactory;
 use App\Actions\Farm\Factories\CowFactory;
@@ -26,43 +26,25 @@ class Manage
 
     }
 
-    public function createChicken() : void{
-
-         $lastNumber = $this->getLastAnimalNumber();
-         $chickenFactory=new ChickenFactory;
-         $this->animals->push ( $chickenFactory->create($lastNumber+1) );
-         unset($chickenFactory);
-         print "A chicken has been bought \n";
-
-    }
-
-    public function createCow() : void{
+    public function createAnimal(AnimalType $animalType, int $count=1 ) :void {
 
 
-            $lastNumber = $this->getLastAnimalNumber();
-            $cowFactory = new CowFactory;
-            $this->animals->push($cowFactory->create($lastNumber + 1));
-            unset($cowFactory);
-            print "A cow has been bought \n";
+        $lastNumber = $this->getLastAnimalNumber() + 1;
+        $animalInfo = $animalType->getAnimalInfo();
+        $className = $animalInfo[1];
 
+        $reflection = new \ReflectionClass("App\Actions\Farm\Factories\\" . $className);
+        $factory = $reflection->newInstanceArgs();
 
-    }
-
-
-    public function createCows(int $amount){
-
-          for ($x=1; $x<=$amount; $x++){
-            $this->createCow();
+        for ($i = 0; $i < $count; $i++) {
+            $this->animals->push($factory->create($lastNumber));
 
         }
 
-    }
+        ($count>1) ? $strEdning='s' : $strEdning='';
+        print "It has been bought " .$count.' '. $animalInfo[0] .$strEdning . " \n";
+        unset($factory);
 
-    public function createChickens(int $amount){
-
-        for ($x=1; $x<=$amount; $x++){
-            $this->createChicken();
-        }
     }
 
 

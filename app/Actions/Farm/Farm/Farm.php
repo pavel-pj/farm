@@ -5,6 +5,7 @@ namespace App\Actions\Farm\Farm;
 use Illuminate\Support\Collection;
 use App\Actions\Farm\Factories\InitFactory;
 use App\Actions\Farm\Managment\Manage;
+use App\Actions\Farm\Enum\AnimalType;
 
 class Farm {
 
@@ -15,14 +16,15 @@ class Farm {
 
     public function life() {
 
-         $this->createAnimals();
+         $this->initAnimals();
          $this->getReportALlAnimals();
 
          $this->storeProducts(7);
          $this->getReportProduction();
 
-         $this->createChickens(5);
-         $this->createCows(1);
+         $this->createAnimal(AnimalType::CHICKEN,5);
+         $this->createAnimal(AnimalType::COW,1);
+         $this->createAnimal(AnimalType::SHEEP,4);
 
          $this->getReportALlAnimals();
          
@@ -31,53 +33,24 @@ class Farm {
 
 
 
-
-
-
-
     }
 
 
 
-    public function createAnimals() : void {
+    public function initAnimals() : void {
 
         $this->animals=initFactory::create();
         $this->manager=new Manage( $this->animals);
 
-        print "All animals has been created";
+        print "All animals has been initialized\n";
         print "\n \n";
     }
 
-    public function showAnimalsAll(){
+    public function createAnimal(AnimalType $animalType, int $count=1) {
 
-        //print "There are follow animals in the barn: \n";
-        $this->manager->showAnimals();
-        print "\n \n";
-    }
-
-
-    public function createChicken() {
-        $this->manager->createChicken();
-       }
-
-    public function createCow() {
-
-        $this->manager->createCow();
+        $this->manager->createAnimal($animalType,$count);
 
     }
-
-    public function createChickens(int $amount) {
-        $this->manager->createChickens($amount);
-    }
-
-    public function createCows(int $amount) {
-
-        $this->manager->createCows($amount);
-    }
-
-
-
-
 
 
     public function storeProducts(int $days){

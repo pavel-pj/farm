@@ -13,7 +13,7 @@ class InitFactory {
         $animalNumber=0;
         $cowFactory=new CowFactory;
         $chickenFactory=new ChickenFactory;
-
+        
 
         for ($c=1;  $c<=20; $c++) {
 
